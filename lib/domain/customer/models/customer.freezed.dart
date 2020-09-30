@@ -14,9 +14,11 @@ class _$CustomerTearOff {
 
 // ignore: unused_element
   _Customer call(
-      {@required CustomerName name,
+      {@required UniqueId id,
+      @required CustomerName name,
       @required List<ActiveProduct> activeProducts}) {
     return _Customer(
+      id: id,
       name: name,
       activeProducts: activeProducts,
     );
@@ -27,6 +29,7 @@ class _$CustomerTearOff {
 const $Customer = _$CustomerTearOff();
 
 mixin _$Customer {
+  UniqueId get id;
   CustomerName get name;
   List<ActiveProduct> get activeProducts;
 
@@ -36,7 +39,8 @@ mixin _$Customer {
 abstract class $CustomerCopyWith<$Res> {
   factory $CustomerCopyWith(Customer value, $Res Function(Customer) then) =
       _$CustomerCopyWithImpl<$Res>;
-  $Res call({CustomerName name, List<ActiveProduct> activeProducts});
+  $Res call(
+      {UniqueId id, CustomerName name, List<ActiveProduct> activeProducts});
 }
 
 class _$CustomerCopyWithImpl<$Res> implements $CustomerCopyWith<$Res> {
@@ -48,10 +52,12 @@ class _$CustomerCopyWithImpl<$Res> implements $CustomerCopyWith<$Res> {
 
   @override
   $Res call({
+    Object id = freezed,
     Object name = freezed,
     Object activeProducts = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed ? _value.id : id as UniqueId,
       name: name == freezed ? _value.name : name as CustomerName,
       activeProducts: activeProducts == freezed
           ? _value.activeProducts
@@ -64,7 +70,8 @@ abstract class _$CustomerCopyWith<$Res> implements $CustomerCopyWith<$Res> {
   factory _$CustomerCopyWith(_Customer value, $Res Function(_Customer) then) =
       __$CustomerCopyWithImpl<$Res>;
   @override
-  $Res call({CustomerName name, List<ActiveProduct> activeProducts});
+  $Res call(
+      {UniqueId id, CustomerName name, List<ActiveProduct> activeProducts});
 }
 
 class __$CustomerCopyWithImpl<$Res> extends _$CustomerCopyWithImpl<$Res>
@@ -77,10 +84,12 @@ class __$CustomerCopyWithImpl<$Res> extends _$CustomerCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object id = freezed,
     Object name = freezed,
     Object activeProducts = freezed,
   }) {
     return _then(_Customer(
+      id: id == freezed ? _value.id : id as UniqueId,
       name: name == freezed ? _value.name : name as CustomerName,
       activeProducts: activeProducts == freezed
           ? _value.activeProducts
@@ -90,10 +99,14 @@ class __$CustomerCopyWithImpl<$Res> extends _$CustomerCopyWithImpl<$Res>
 }
 
 class _$_Customer implements _Customer {
-  const _$_Customer({@required this.name, @required this.activeProducts})
-      : assert(name != null),
+  const _$_Customer(
+      {@required this.id, @required this.name, @required this.activeProducts})
+      : assert(id != null),
+        assert(name != null),
         assert(activeProducts != null);
 
+  @override
+  final UniqueId id;
   @override
   final CustomerName name;
   @override
@@ -101,13 +114,15 @@ class _$_Customer implements _Customer {
 
   @override
   String toString() {
-    return 'Customer(name: $name, activeProducts: $activeProducts)';
+    return 'Customer(id: $id, name: $name, activeProducts: $activeProducts)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Customer &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.activeProducts, activeProducts) ||
@@ -118,6 +133,7 @@ class _$_Customer implements _Customer {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(activeProducts);
 
@@ -128,9 +144,12 @@ class _$_Customer implements _Customer {
 
 abstract class _Customer implements Customer {
   const factory _Customer(
-      {@required CustomerName name,
+      {@required UniqueId id,
+      @required CustomerName name,
       @required List<ActiveProduct> activeProducts}) = _$_Customer;
 
+  @override
+  UniqueId get id;
   @override
   CustomerName get name;
   @override

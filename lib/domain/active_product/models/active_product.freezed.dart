@@ -14,8 +14,11 @@ class _$ActiveProductTearOff {
 
 // ignore: unused_element
   _ActiveProduct call(
-      {@required Product product, @required ProductPrice price}) {
+      {@required UniqueId id,
+      @required Product product,
+      @required ProductPrice price}) {
     return _ActiveProduct(
+      id: id,
       product: product,
       price: price,
     );
@@ -26,6 +29,7 @@ class _$ActiveProductTearOff {
 const $ActiveProduct = _$ActiveProductTearOff();
 
 mixin _$ActiveProduct {
+  UniqueId get id;
   Product get product;
   ProductPrice get price;
 
@@ -36,7 +40,7 @@ abstract class $ActiveProductCopyWith<$Res> {
   factory $ActiveProductCopyWith(
           ActiveProduct value, $Res Function(ActiveProduct) then) =
       _$ActiveProductCopyWithImpl<$Res>;
-  $Res call({Product product, ProductPrice price});
+  $Res call({UniqueId id, Product product, ProductPrice price});
 
   $ProductCopyWith<$Res> get product;
 }
@@ -51,10 +55,12 @@ class _$ActiveProductCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object id = freezed,
     Object product = freezed,
     Object price = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed ? _value.id : id as UniqueId,
       product: product == freezed ? _value.product : product as Product,
       price: price == freezed ? _value.price : price as ProductPrice,
     ));
@@ -77,7 +83,7 @@ abstract class _$ActiveProductCopyWith<$Res>
           _ActiveProduct value, $Res Function(_ActiveProduct) then) =
       __$ActiveProductCopyWithImpl<$Res>;
   @override
-  $Res call({Product product, ProductPrice price});
+  $Res call({UniqueId id, Product product, ProductPrice price});
 
   @override
   $ProductCopyWith<$Res> get product;
@@ -95,10 +101,12 @@ class __$ActiveProductCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object id = freezed,
     Object product = freezed,
     Object price = freezed,
   }) {
     return _then(_ActiveProduct(
+      id: id == freezed ? _value.id : id as UniqueId,
       product: product == freezed ? _value.product : product as Product,
       price: price == freezed ? _value.price : price as ProductPrice,
     ));
@@ -106,10 +114,14 @@ class __$ActiveProductCopyWithImpl<$Res>
 }
 
 class _$_ActiveProduct implements _ActiveProduct {
-  const _$_ActiveProduct({@required this.product, @required this.price})
-      : assert(product != null),
+  const _$_ActiveProduct(
+      {@required this.id, @required this.product, @required this.price})
+      : assert(id != null),
+        assert(product != null),
         assert(price != null);
 
+  @override
+  final UniqueId id;
   @override
   final Product product;
   @override
@@ -117,13 +129,15 @@ class _$_ActiveProduct implements _ActiveProduct {
 
   @override
   String toString() {
-    return 'ActiveProduct(product: $product, price: $price)';
+    return 'ActiveProduct(id: $id, product: $product, price: $price)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _ActiveProduct &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.product, product) ||
                 const DeepCollectionEquality()
                     .equals(other.product, product)) &&
@@ -134,6 +148,7 @@ class _$_ActiveProduct implements _ActiveProduct {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(product) ^
       const DeepCollectionEquality().hash(price);
 
@@ -144,9 +159,12 @@ class _$_ActiveProduct implements _ActiveProduct {
 
 abstract class _ActiveProduct implements ActiveProduct {
   const factory _ActiveProduct(
-      {@required Product product,
+      {@required UniqueId id,
+      @required Product product,
       @required ProductPrice price}) = _$_ActiveProduct;
 
+  @override
+  UniqueId get id;
   @override
   Product get product;
   @override

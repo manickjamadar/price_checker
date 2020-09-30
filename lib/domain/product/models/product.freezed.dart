@@ -13,8 +13,9 @@ class _$ProductTearOff {
   const _$ProductTearOff();
 
 // ignore: unused_element
-  _Product call({@required ProductName name}) {
+  _Product call({@required UniqueId id, @required ProductName name}) {
     return _Product(
+      id: id,
       name: name,
     );
   }
@@ -24,6 +25,7 @@ class _$ProductTearOff {
 const $Product = _$ProductTearOff();
 
 mixin _$Product {
+  UniqueId get id;
   ProductName get name;
 
   $ProductCopyWith<Product> get copyWith;
@@ -32,7 +34,7 @@ mixin _$Product {
 abstract class $ProductCopyWith<$Res> {
   factory $ProductCopyWith(Product value, $Res Function(Product) then) =
       _$ProductCopyWithImpl<$Res>;
-  $Res call({ProductName name});
+  $Res call({UniqueId id, ProductName name});
 }
 
 class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
@@ -44,9 +46,11 @@ class _$ProductCopyWithImpl<$Res> implements $ProductCopyWith<$Res> {
 
   @override
   $Res call({
+    Object id = freezed,
     Object name = freezed,
   }) {
     return _then(_value.copyWith(
+      id: id == freezed ? _value.id : id as UniqueId,
       name: name == freezed ? _value.name : name as ProductName,
     ));
   }
@@ -56,7 +60,7 @@ abstract class _$ProductCopyWith<$Res> implements $ProductCopyWith<$Res> {
   factory _$ProductCopyWith(_Product value, $Res Function(_Product) then) =
       __$ProductCopyWithImpl<$Res>;
   @override
-  $Res call({ProductName name});
+  $Res call({UniqueId id, ProductName name});
 }
 
 class __$ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
@@ -69,36 +73,46 @@ class __$ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object id = freezed,
     Object name = freezed,
   }) {
     return _then(_Product(
+      id: id == freezed ? _value.id : id as UniqueId,
       name: name == freezed ? _value.name : name as ProductName,
     ));
   }
 }
 
 class _$_Product implements _Product {
-  const _$_Product({@required this.name}) : assert(name != null);
+  const _$_Product({@required this.id, @required this.name})
+      : assert(id != null),
+        assert(name != null);
 
+  @override
+  final UniqueId id;
   @override
   final ProductName name;
 
   @override
   String toString() {
-    return 'Product(name: $name)';
+    return 'Product(id: $id, name: $name)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _Product &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(name);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(name);
 
   @override
   _$ProductCopyWith<_Product> get copyWith =>
@@ -106,8 +120,11 @@ class _$_Product implements _Product {
 }
 
 abstract class _Product implements Product {
-  const factory _Product({@required ProductName name}) = _$_Product;
+  const factory _Product({@required UniqueId id, @required ProductName name}) =
+      _$_Product;
 
+  @override
+  UniqueId get id;
   @override
   ProductName get name;
   @override
