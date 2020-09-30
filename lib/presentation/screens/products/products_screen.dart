@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:price_checker/application/cubit/product_cubit.dart';
+import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/product/models/product.dart';
+import 'package:price_checker/presentation/core/widgets/input_dialog.dart';
 
 class ProductScreen extends StatelessWidget {
   static Widget generateRoute({@required ProductCubit cubit}) {
@@ -13,7 +14,7 @@ class ProductScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () => _onAddProduct(context),
       ),
       appBar: AppBar(
         title: Text("Products"),
@@ -57,5 +58,14 @@ class ProductScreen extends StatelessWidget {
           );
         },
         itemCount: products.length);
+  }
+
+  void _onAddProduct(BuildContext context) async {
+    final String name = await showDialog(
+        context: context,
+        builder: (_) => InputDialog(title: "Add Product", hint: "Name"));
+    if (name != null) {
+      BlocProvider.of<ProductCubit>(context).save(name);
+    }
   }
 }
