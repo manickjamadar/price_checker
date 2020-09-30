@@ -36,6 +36,10 @@ class ProductScreen extends StatelessWidget {
                     child: Icon(Icons.local_mall),
                   ),
                   title: Text(product.name.value),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {},
+                  ),
                 ),
               );
             },
