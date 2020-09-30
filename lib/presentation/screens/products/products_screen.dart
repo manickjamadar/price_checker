@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:price_checker/application/cubit/product_cubit.dart';
 import 'package:price_checker/domain/product/models/product.dart';
-import 'package:price_checker/domain/product/value_objects/product_name.dart';
 
 class ProductScreen extends StatelessWidget {
-  static Widget generateRoute() {
-    return ProductScreen();
+  static Widget generateRoute({@required ProductCubit cubit}) {
+    return BlocProvider.value(value: cubit, child: ProductScreen());
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<Product> products = [
-      Product(name: ProductName("Potato")),
-      Product(name: ProductName("Tomato")),
-      Product(name: ProductName("Belt")),
-      Product(name: ProductName("Belt")),
-      Product(name: ProductName("Belt")),
-      Product(name: ProductName("Belt")),
-    ];
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -27,24 +20,42 @@ class ProductScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView.builder(
-            itemBuilder: (_, index) {
-              final product = products[index];
-              return Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    child: Icon(Icons.local_mall),
-                  ),
-                  title: Text(product.name.value),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {},
-                  ),
-                ),
-              );
-            },
-            itemCount: products.length),
+        child: BlocBuilder<ProductCubit, ProductState>(
+          builder: (_, state) {
+            return state.when(
+                inital: () => Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                loaded: (products) =>
+                    products.isEmpty ? buildEmpty() : buildProducts(products),
+                error: () => Center(child: Text("Something went wrong")));
+          },
+        ),
       ),
     );
+  }
+
+  Widget buildEmpty() {
+    return Center(child: Text("No Product Availabile"));
+  }
+
+  Widget buildProducts(List<Product> products) {
+    return ListView.builder(
+        itemBuilder: (_, index) {
+          final product = products[index];
+          return Card(
+            child: ListTile(
+              leading: CircleAvatar(
+                child: Icon(Icons.local_mall),
+              ),
+              title: Text(product.name.value),
+              trailing: IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {},
+              ),
+            ),
+          );
+        },
+        itemCount: products.length);
   }
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:price_checker/application/cubit/product_cubit.dart';
 import 'package:price_checker/domain/active_product/models/active_product.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/domain/customer/value_objects/customer_name.dart';
@@ -62,7 +64,8 @@ class HomeScreen extends StatelessWidget {
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => ProductScreen.generateRoute())),
+                    builder: (_) => ProductScreen.generateRoute(
+                        cubit: BlocProvider.of<ProductCubit>(context)))),
           )
         ],
       ),
