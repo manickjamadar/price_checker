@@ -4,5 +4,5 @@ class ProductPrice extends ValueObject<num> {
   const ProductPrice(num value) : super(value);
 
   @override
-  bool get isValid => value >= 0;
+  bool get isValid => value != null && value >= 0;
 }

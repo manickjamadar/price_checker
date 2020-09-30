@@ -4,5 +4,5 @@ class CustomerName extends ValueObject<String> {
   const CustomerName(String value) : super(value);
 
   @override
-  bool get isValid => value.isNotEmpty;
+  bool get isValid => value != null && value.isNotEmpty;
 }
