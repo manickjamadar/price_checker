@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:price_checker/presentation/screens/products/products_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -17,7 +18,10 @@ class HomeScreen extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.local_mall),
-            onPressed: () {},
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => ProductScreen.generateRoute())),
           )
         ],
       ),
