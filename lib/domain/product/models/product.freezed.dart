@@ -83,10 +83,11 @@ class __$ProductCopyWithImpl<$Res> extends _$ProductCopyWithImpl<$Res>
   }
 }
 
-class _$_Product implements _Product {
+class _$_Product extends _Product {
   const _$_Product({@required this.id, @required this.name})
       : assert(id != null),
-        assert(name != null);
+        assert(name != null),
+        super._();
 
   @override
   final UniqueId id;
@@ -119,7 +120,8 @@ class _$_Product implements _Product {
       __$ProductCopyWithImpl<_Product>(this, _$identity);
 }
 
-abstract class _Product implements Product {
+abstract class _Product extends Product {
+  const _Product._() : super._();
   const factory _Product({@required UniqueId id, @required ProductName name}) =
       _$_Product;
 

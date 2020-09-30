@@ -4,7 +4,12 @@ import 'package:price_checker/domain/product/value_objects/product_name.dart';
 part 'product.freezed.dart';
 
 @freezed
-abstract class Product with _$Product {
+abstract class Product implements _$Product {
+  const Product._();
   const factory Product({@required UniqueId id, @required ProductName name}) =
       _Product;
+
+  bool get isValid {
+    return name.isValid;
+  }
 }
