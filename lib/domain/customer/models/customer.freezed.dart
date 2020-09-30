@@ -15,12 +15,10 @@ class _$CustomerTearOff {
 // ignore: unused_element
   _Customer call(
       {@required CustomerName name,
-      @required Product product,
-      @required ProductPrice price}) {
+      @required List<ActiveProduct> activeProducts}) {
     return _Customer(
       name: name,
-      product: product,
-      price: price,
+      activeProducts: activeProducts,
     );
   }
 }
@@ -30,8 +28,7 @@ const $Customer = _$CustomerTearOff();
 
 mixin _$Customer {
   CustomerName get name;
-  Product get product;
-  ProductPrice get price;
+  List<ActiveProduct> get activeProducts;
 
   $CustomerCopyWith<Customer> get copyWith;
 }
@@ -39,9 +36,7 @@ mixin _$Customer {
 abstract class $CustomerCopyWith<$Res> {
   factory $CustomerCopyWith(Customer value, $Res Function(Customer) then) =
       _$CustomerCopyWithImpl<$Res>;
-  $Res call({CustomerName name, Product product, ProductPrice price});
-
-  $ProductCopyWith<$Res> get product;
+  $Res call({CustomerName name, List<ActiveProduct> activeProducts});
 }
 
 class _$CustomerCopyWithImpl<$Res> implements $CustomerCopyWith<$Res> {
@@ -54,24 +49,14 @@ class _$CustomerCopyWithImpl<$Res> implements $CustomerCopyWith<$Res> {
   @override
   $Res call({
     Object name = freezed,
-    Object product = freezed,
-    Object price = freezed,
+    Object activeProducts = freezed,
   }) {
     return _then(_value.copyWith(
       name: name == freezed ? _value.name : name as CustomerName,
-      product: product == freezed ? _value.product : product as Product,
-      price: price == freezed ? _value.price : price as ProductPrice,
+      activeProducts: activeProducts == freezed
+          ? _value.activeProducts
+          : activeProducts as List<ActiveProduct>,
     ));
-  }
-
-  @override
-  $ProductCopyWith<$Res> get product {
-    if (_value.product == null) {
-      return null;
-    }
-    return $ProductCopyWith<$Res>(_value.product, (value) {
-      return _then(_value.copyWith(product: value));
-    });
   }
 }
 
@@ -79,10 +64,7 @@ abstract class _$CustomerCopyWith<$Res> implements $CustomerCopyWith<$Res> {
   factory _$CustomerCopyWith(_Customer value, $Res Function(_Customer) then) =
       __$CustomerCopyWithImpl<$Res>;
   @override
-  $Res call({CustomerName name, Product product, ProductPrice price});
-
-  @override
-  $ProductCopyWith<$Res> get product;
+  $Res call({CustomerName name, List<ActiveProduct> activeProducts});
 }
 
 class __$CustomerCopyWithImpl<$Res> extends _$CustomerCopyWithImpl<$Res>
@@ -96,34 +78,30 @@ class __$CustomerCopyWithImpl<$Res> extends _$CustomerCopyWithImpl<$Res>
   @override
   $Res call({
     Object name = freezed,
-    Object product = freezed,
-    Object price = freezed,
+    Object activeProducts = freezed,
   }) {
     return _then(_Customer(
       name: name == freezed ? _value.name : name as CustomerName,
-      product: product == freezed ? _value.product : product as Product,
-      price: price == freezed ? _value.price : price as ProductPrice,
+      activeProducts: activeProducts == freezed
+          ? _value.activeProducts
+          : activeProducts as List<ActiveProduct>,
     ));
   }
 }
 
 class _$_Customer implements _Customer {
-  const _$_Customer(
-      {@required this.name, @required this.product, @required this.price})
+  const _$_Customer({@required this.name, @required this.activeProducts})
       : assert(name != null),
-        assert(product != null),
-        assert(price != null);
+        assert(activeProducts != null);
 
   @override
   final CustomerName name;
   @override
-  final Product product;
-  @override
-  final ProductPrice price;
+  final List<ActiveProduct> activeProducts;
 
   @override
   String toString() {
-    return 'Customer(name: $name, product: $product, price: $price)';
+    return 'Customer(name: $name, activeProducts: $activeProducts)';
   }
 
   @override
@@ -132,19 +110,16 @@ class _$_Customer implements _Customer {
         (other is _Customer &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
-            (identical(other.product, product) ||
+            (identical(other.activeProducts, activeProducts) ||
                 const DeepCollectionEquality()
-                    .equals(other.product, product)) &&
-            (identical(other.price, price) ||
-                const DeepCollectionEquality().equals(other.price, price)));
+                    .equals(other.activeProducts, activeProducts)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(product) ^
-      const DeepCollectionEquality().hash(price);
+      const DeepCollectionEquality().hash(activeProducts);
 
   @override
   _$CustomerCopyWith<_Customer> get copyWith =>
@@ -154,15 +129,12 @@ class _$_Customer implements _Customer {
 abstract class _Customer implements Customer {
   const factory _Customer(
       {@required CustomerName name,
-      @required Product product,
-      @required ProductPrice price}) = _$_Customer;
+      @required List<ActiveProduct> activeProducts}) = _$_Customer;
 
   @override
   CustomerName get name;
   @override
-  Product get product;
-  @override
-  ProductPrice get price;
+  List<ActiveProduct> get activeProducts;
   @override
   _$CustomerCopyWith<_Customer> get copyWith;
 }
