@@ -85,7 +85,11 @@ class ProductScreen extends StatelessWidget {
   void _onEditProduct(BuildContext context, Product product) async {
     final String name = await showDialog(
         context: context,
-        builder: (_) => InputDialog(title: "Edit Product", hint: "Name"));
+        builder: (_) => InputDialog(
+              title: "Edit Product",
+              hint: "Name",
+              initialValue: product.name.value,
+            ));
     if (name != null) {
       BlocProvider.of<ProductCubit>(context).update(product.id, name);
     }
