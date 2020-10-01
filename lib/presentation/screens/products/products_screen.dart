@@ -28,8 +28,9 @@ class ProductScreen extends StatelessWidget {
                 inital: () => Center(
                       child: CircularProgressIndicator(),
                     ),
-                loaded: (products) =>
-                    products.isEmpty ? buildEmpty() : buildProducts(products),
+                loaded: (products) => products.isEmpty
+                    ? buildEmpty()
+                    : buildProducts(context, products),
                 error: () => Center(child: Text("Something went wrong")));
           },
         ),
@@ -41,7 +42,7 @@ class ProductScreen extends StatelessWidget {
     return Center(child: Text("No Product Availabile"));
   }
 
-  Widget buildProducts(List<Product> products) {
+  Widget buildProducts(BuildContext context, List<Product> products) {
     return ListView.builder(
         itemBuilder: (_, index) {
           final product = products[index];
@@ -56,7 +57,7 @@ class ProductScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: Icon(Icons.edit),
-                    onPressed: () {},
+                    onPressed: () => _onEditProduct(context, product),
                   ),
                   Builder(
                     builder: (context) => IconButton(
@@ -78,6 +79,15 @@ class ProductScreen extends StatelessWidget {
         builder: (_) => InputDialog(title: "Add Product", hint: "Name"));
     if (name != null) {
       BlocProvider.of<ProductCubit>(context).save(name);
+    }
+  }
+
+  void _onEditProduct(BuildContext context, Product product) async {
+    final String name = await showDialog(
+        context: context,
+        builder: (_) => InputDialog(title: "Edit Product", hint: "Name"));
+    if (name != null) {
+      BlocProvider.of<ProductCubit>(context).update(product.id, name);
     }
   }
 
