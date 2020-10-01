@@ -12,13 +12,17 @@ class Deletor {
 
   Future<bool> get shouldDelete => _completer.future;
 
-  bool get canDelete => !_completer.isCompleted;
+  bool get canPerform => !_completer.isCompleted;
 
   void delete() {
-    _completer.complete(true);
+    if (canPerform) {
+      _completer.complete(true);
+    }
   }
 
   void undo() {
-    _completer.complete(false);
+    if (canPerform) {
+      _completer.complete(false);
+    }
   }
 }
