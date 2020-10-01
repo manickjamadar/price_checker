@@ -13,6 +13,7 @@ class ProductCubit extends Cubit<ProductState> {
 
   //events
   void init() {
+    //TODO: get all products
     emit(ProductState.loaded(products: []));
   }
 
@@ -26,6 +27,7 @@ class ProductCubit extends Cubit<ProductState> {
         loaded: (products) {
           final newList = [...products, product];
           emit(ProductState.loaded(products: newList));
+          //TODO: save product permanantly
         });
   }
 
@@ -38,8 +40,7 @@ class ProductCubit extends Cubit<ProductState> {
           emit(ProductState.loaded(products: newList));
           deletor.shouldDelete.then((value) {
             if (value) {
-              //delete permanantly
-              print("delete parmanantly");
+              //TODO: delete permanantly
             } else {
               emit(ProductState.loaded(products: products));
             }
