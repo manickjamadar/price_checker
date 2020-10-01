@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/product/models/product.dart';
+import 'package:price_checker/presentation/core/helpers/deletor.dart';
 import 'package:price_checker/presentation/core/widgets/input_dialog.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -50,9 +51,11 @@ class ProductScreen extends StatelessWidget {
                 child: Icon(Icons.local_mall),
               ),
               title: Text(product.name.value),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {},
+              trailing: Builder(
+                builder: (context) => IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => _onDelete(context, product),
+                ),
               ),
             ),
           );
@@ -66,6 +69,28 @@ class ProductScreen extends StatelessWidget {
         builder: (_) => InputDialog(title: "Add Product", hint: "Name"));
     if (name != null) {
       BlocProvider.of<ProductCubit>(context).save(name);
+    }
+  }
+
+  void _onDelete(BuildContext context, Product product) async {
+    final deletor = Deletor(product.id);
+    final duration = Duration(seconds: 3);
+    BlocProvider.of<ProductCubit>(context).delete(deletor);
+    Scaffold.of(context).removeCurrentSnackBar();
+    Scaffold.of(context).showSnackBar(SnackBar(
+      duration: duration,
+      content: Text("${product.name.value} deleted successfully",
+          style: TextStyle(color: Colors.white)),
+      backgroundColor: Colors.green,
+      action: SnackBarAction(
+        label: "Undo",
+        onPressed: () => deletor.undo(),
+        textColor: Colors.white,
+      ),
+    ));
+    await Future.delayed(duration);
+    if (deletor.canPerform) {
+      deletor.delete();
     }
   }
 }
