@@ -82,7 +82,7 @@ class CustomerFormScreen extends StatelessWidget {
                           children: [
                             IconButton(
                               icon: Icon(Icons.edit, color: Colors.blue),
-                              onPressed: () {},
+                              onPressed: () => _onEditPrice(context, ap),
                             ),
                             IconButton(
                               icon: Icon(Icons.clear, color: Colors.red),
@@ -114,6 +114,22 @@ class CustomerFormScreen extends StatelessWidget {
 
   void _onNameChanged(BuildContext context, String name) {
     BlocProvider.of<CustomerFormCubit>(context).nameChanged(name);
+  }
+
+  void _onEditPrice(BuildContext context, ActiveProduct activeProduct) async {
+    final String price = await showDialog(
+        context: context,
+        builder: (_) => InputDialog(
+              hint: "Amount",
+              title: "Add Price",
+              keyboardType: TextInputType.number,
+            ));
+    if (price == null || int.tryParse(price) == null) {
+      return;
+    }
+    final int actualPrice = int.tryParse(price);
+    BlocProvider.of<CustomerFormCubit>(context)
+        .priceUpdated(activeProduct.id, actualPrice);
   }
 
   void _onAddProduct(BuildContext context) async {
