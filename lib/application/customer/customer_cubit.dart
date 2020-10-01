@@ -27,18 +27,18 @@ class CustomerCubit extends Cubit<CustomerState> {
         });
   }
 
-  // void update(Customer customer) {
-  //   state.maybeWhen(
-  //       orElse: () {},
-  //       loaded: (customers) {
-  //         final newList = customers.map((c) {
-  //           if (c.id == customer.id && customer.isValid) {
-  //             return customer;
-  //           }
-  //           return c;
-  //         }).toList();
+  void update(Customer customer) {
+    state.maybeWhen(
+        orElse: () {},
+        loaded: (customers) {
+          final newList = customers.map((c) {
+            if (c.id == customer.id && customer.isValid) {
+              return customer;
+            }
+            return c;
+          }).toList();
 
-  //         emit(CustomerState.loaded(customers: newList));
-  //       });
-  // }
+          emit(CustomerState.loaded(customers: newList));
+        });
+  }
 }
