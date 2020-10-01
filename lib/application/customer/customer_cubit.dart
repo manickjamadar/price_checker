@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
+import 'package:price_checker/presentation/core/helpers/deletor.dart';
 
 part 'customer_state.dart';
 part 'customer_cubit.freezed.dart';
@@ -39,6 +40,23 @@ class CustomerCubit extends Cubit<CustomerState> {
           }).toList();
 
           emit(CustomerState.loaded(customers: newList));
+        });
+  }
+
+  void delete(Deletor deletor) {
+    state.maybeWhen(
+        orElse: () {},
+        loaded: (customers) {
+          final newList =
+              customers.where((customer) => customer.id != deletor.id).toList();
+          emit(CustomerState.loaded(customers: newList));
+          deletor.shouldDelete.then((value) {
+            if (value) {
+              //TODO: delete permanantly
+            } else {
+              emit(CustomerState.loaded(customers: customers));
+            }
+          });
         });
   }
 }
