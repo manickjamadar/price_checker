@@ -47,4 +47,23 @@ class ProductCubit extends Cubit<ProductState> {
           });
         });
   }
+
+  void update(UniqueId id, String name) {
+    state.maybeWhen(
+        orElse: () {},
+        loaded: (products) {
+          final newList = products.map((product) {
+            if (product.id == id) {
+              final newProduct = product.copyWith(name: ProductName(name));
+              if (newProduct.isValid) {
+                //Todo: update product permanantly
+                return newProduct;
+              }
+            }
+            return product;
+          }).toList();
+
+          emit(ProductState.loaded(products: newList));
+        });
+  }
 }
