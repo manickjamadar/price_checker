@@ -20,20 +20,17 @@ class ProductScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Products"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: BlocBuilder<ProductCubit, ProductState>(
-          builder: (_, state) {
-            return state.when(
-                inital: () => Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                loaded: (products) => products.isEmpty
-                    ? buildEmpty()
-                    : buildProducts(context, products),
-                error: () => Center(child: Text("Something went wrong")));
-          },
-        ),
+      body: BlocBuilder<ProductCubit, ProductState>(
+        builder: (_, state) {
+          return state.when(
+              inital: () => Center(
+                    child: CircularProgressIndicator(),
+                  ),
+              loaded: (products) => products.isEmpty
+                  ? buildEmpty()
+                  : buildProducts(context, products),
+              error: () => Center(child: Text("Something went wrong")));
+        },
       ),
     );
   }
@@ -47,6 +44,7 @@ class ProductScreen extends StatelessWidget {
         itemBuilder: (_, index) {
           final product = products[index];
           return Card(
+            margin: EdgeInsets.all(1),
             child: ListTile(
               leading: CircleAvatar(
                 child: Icon(Icons.local_mall),
