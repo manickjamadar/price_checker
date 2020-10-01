@@ -37,8 +37,9 @@ class HomeScreen extends StatelessWidget {
             inital: () => Center(
               child: CircularProgressIndicator(),
             ),
-            loaded: (customers) =>
-                customers.isEmpty ? buildEmpty() : buildCustomer(customers),
+            loaded: (customers) => customers.isEmpty
+                ? buildEmpty()
+                : buildCustomer(context, customers),
             error: () => Center(child: Text("Something went wrong, try again")),
           );
         },
@@ -50,7 +51,7 @@ class HomeScreen extends StatelessWidget {
     return Center(child: Text("No Customer Available"));
   }
 
-  Widget buildCustomer(List<Customer> customers) {
+  Widget buildCustomer(BuildContext context, List<Customer> customers) {
     return ListView.builder(
       itemBuilder: (_, index) {
         final customer = customers[index];
@@ -60,13 +61,25 @@ class HomeScreen extends StatelessWidget {
           ),
           title: Text(customer.name.value),
           subtitle: Text("${customer.activeProducts.length} Products"),
-          trailing: IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () {},
-          ),
+          trailing: buildMoreButton(context),
         );
       },
       itemCount: customers.length,
+    );
+  }
+
+  Widget buildMoreButton(BuildContext context) {
+    final menuItems = ["Edit", "Delete"];
+    return PopupMenuButton<int>(
+      icon: Icon(Icons.more_vert),
+      itemBuilder: (_) => menuItems
+          .asMap()
+          .keys
+          .map((key) => PopupMenuItem<int>(
+                child: Text(menuItems[key]),
+                value: key,
+              ))
+          .toList(),
     );
   }
 
