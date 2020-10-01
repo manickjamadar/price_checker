@@ -113,12 +113,13 @@ class __$ActiveProductCopyWithImpl<$Res>
   }
 }
 
-class _$_ActiveProduct implements _ActiveProduct {
+class _$_ActiveProduct extends _ActiveProduct {
   const _$_ActiveProduct(
       {@required this.id, @required this.product, @required this.price})
       : assert(id != null),
         assert(product != null),
-        assert(price != null);
+        assert(price != null),
+        super._();
 
   @override
   final UniqueId id;
@@ -157,7 +158,8 @@ class _$_ActiveProduct implements _ActiveProduct {
       __$ActiveProductCopyWithImpl<_ActiveProduct>(this, _$identity);
 }
 
-abstract class _ActiveProduct implements ActiveProduct {
+abstract class _ActiveProduct extends ActiveProduct {
+  const _ActiveProduct._() : super._();
   const factory _ActiveProduct(
       {@required UniqueId id,
       @required Product product,
