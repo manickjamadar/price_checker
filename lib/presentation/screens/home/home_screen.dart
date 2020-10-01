@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_checker/application/customer/customer_cubit.dart';
 import 'package:price_checker/application/product/product_cubit.dart';
-import 'package:price_checker/domain/active_product/models/active_product.dart';
-import 'package:price_checker/domain/core/unique_id.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
-import 'package:price_checker/domain/customer/value_objects/customer_name.dart';
-import 'package:price_checker/domain/product/models/product.dart';
-import 'package:price_checker/domain/product/value_objects/product_name.dart';
-import 'package:price_checker/domain/active_product/value_objects/product_price.dart';
+import 'package:price_checker/presentation/screens/customer_form/customer_form_screen.dart';
 import 'package:price_checker/presentation/screens/products/products_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () => _onAddCustomer(context),
       ),
       appBar: AppBar(
         title: Text("Customers"),
@@ -73,5 +68,12 @@ class HomeScreen extends StatelessWidget {
       },
       itemCount: customers.length,
     );
+  }
+
+  void _onAddCustomer(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => CustomerFormScreen.generateRoute(context)));
   }
 }
