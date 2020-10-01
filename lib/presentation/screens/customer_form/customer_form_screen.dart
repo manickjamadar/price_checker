@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_checker/application/customer_form/customer_form_cubit.dart';
+import 'package:price_checker/application/product/product_cubit.dart';
+import 'package:price_checker/presentation/screens/select_product/select_product_screen.dart';
 
 class CustomerFormScreen extends StatelessWidget {
   static Widget generateRoute(BuildContext context) {
@@ -31,7 +33,7 @@ class CustomerFormScreen extends StatelessWidget {
                       Text("Products(0)"),
                       FlatButton(
                         child: Text("Add Product"),
-                        onPressed: () {},
+                        onPressed: () => _onAddProduct(context),
                       )
                     ],
                   )
@@ -65,5 +67,17 @@ class CustomerFormScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onAddProduct(BuildContext context) async {
+    await BlocProvider.of<ProductCubit>(context).state.maybeWhen(
+        orElse: () {},
+        loaded: (products) async {
+          final selectedProduct = await Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => SelectProductScreen.generateRoute(products)));
+          print(selectedProduct);
+        });
   }
 }
