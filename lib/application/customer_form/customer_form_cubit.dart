@@ -33,7 +33,7 @@ class CustomerFormCubit extends Cubit<CustomerFormState> {
       emit(state.copyWith(isSaving: false, saveStatus: Some(Left(Error()))));
     } else {
       if (state.isEditing) {
-        // customerCubit.update(state.customer);
+        customerCubit.update(state.customer);
         //todo: do this parmanantly
       } else {
         customerCubit.save(state.customer);
