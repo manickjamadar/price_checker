@@ -9,8 +9,9 @@ void main() {
   initLocator();
   runApp(MultiBlocProvider(providers: [
     BlocProvider(
+      lazy: false,
       create: (_) => locator<CustomerCubit>()..init(),
     ),
-    BlocProvider(create: (_) => locator<ProductCubit>()..init()),
+    BlocProvider(lazy: false, create: (_) => locator<ProductCubit>()..init()),
   ], child: App()));
 }

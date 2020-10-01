@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:price_checker/domain/core/unique_id.dart';
+import 'package:price_checker/domain/product/facade/product_facade.dart';
 import 'package:price_checker/domain/product/models/product.dart';
 import 'package:price_checker/domain/product/value_objects/product_name.dart';
 import 'package:price_checker/presentation/core/helpers/deletor.dart';
@@ -9,12 +10,17 @@ part 'product_state.dart';
 part 'product_cubit.freezed.dart';
 
 class ProductCubit extends Cubit<ProductState> {
-  ProductCubit() : super(ProductState.inital());
+  final IProductFacade productFacade;
+  ProductCubit({@required this.productFacade}) : super(ProductState.inital());
 
   //events
-  void init() {
-    //TODO: get all products
-    emit(ProductState.loaded(products: []));
+  void init() async {
+    final productsOption = await productFacade.findAll();
+    productsOption.fold((_) {
+      emit(ProductState.loaded(products: []));
+    }, (products) {
+      emit(ProductState.loaded(products: products));
+    });
   }
 
   void save(String name) {
