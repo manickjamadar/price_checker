@@ -12,9 +12,57 @@ class CustomerFormScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Add Customer"),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Add Customer"),
+        ),
+        body: BlocBuilder<CustomerFormCubit, CustomerFormState>(
+          builder: (_, state) {
+            return ReorderableListView(
+              header: Column(
+                children: [
+                  TextField(
+                    decoration: InputDecoration(labelText: "Name"),
+                  ),
+                  Row(
+                    children: [
+                      Text("Products(0)"),
+                      FlatButton(
+                        child: Text("Add Product"),
+                        onPressed: () {},
+                      )
+                    ],
+                  )
+                ],
+              ),
+              onReorder: (oldIndex, newIndex) {},
+              children: state.customer.activeProducts
+                  .map((ap) => ListTile(
+                        key: ValueKey(ap.id),
+                        leading: CircleAvatar(
+                          child: Icon(Icons.local_mall),
+                        ),
+                        title: Text(ap.product.name.value),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.edit),
+                              onPressed: () {},
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.clear),
+                              onPressed: () {},
+                            )
+                          ],
+                        ),
+                      ))
+                  .toList(),
+            );
+          },
+        ),
       ),
     );
   }
