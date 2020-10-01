@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 class InputDialog extends StatefulWidget {
   final String title;
   final String hint;
+  final String initialValue;
 
-  const InputDialog({Key key, @required this.title, @required this.hint})
+  const InputDialog(
+      {Key key,
+      @required this.title,
+      @required this.hint,
+      this.initialValue = ""})
       : super(key: key);
 
   @override
@@ -16,7 +21,7 @@ class _InputDialogState extends State<InputDialog> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _controller = TextEditingController(text: widget.initialValue);
   }
 
   @override
