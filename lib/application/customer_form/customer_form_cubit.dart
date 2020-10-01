@@ -45,6 +45,14 @@ class CustomerFormCubit extends Cubit<CustomerFormState> {
         customer: state.customer.copyWith(activeProducts: newProductList)));
   }
 
+  void productCleared(UniqueId id) {
+    final newProductList =
+        state.customer.activeProducts.where((ap) => ap.id != id).toList();
+    emit(state.copyWith(
+        showError: true,
+        customer: state.customer.copyWith(activeProducts: newProductList)));
+  }
+
   void save() {
     state.copyWith(isSaving: true);
     if (!state.customer.isValid) {
