@@ -10,6 +10,6 @@ abstract class Product implements _$Product {
       _Product;
 
   bool get isValid {
-    return name.isValid;
+    return id.isValid && name.isValid;
   }
 }
