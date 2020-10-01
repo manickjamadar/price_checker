@@ -4,6 +4,7 @@ import 'package:price_checker/application/customer/customer_cubit.dart';
 import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/presentation/core/helpers/deletor.dart';
+import 'package:price_checker/presentation/screens/customer_detail/customer_detail_screen.dart';
 import 'package:price_checker/presentation/screens/customer_form/customer_form_screen.dart';
 import 'package:price_checker/presentation/screens/products/products_screen.dart';
 
@@ -57,6 +58,7 @@ class HomeScreen extends StatelessWidget {
       itemBuilder: (_, index) {
         final customer = customers[index];
         return ListTile(
+          onTap: () => _onCustomerTap(context, customer),
           leading: CircleAvatar(
             child: Icon(Icons.person),
           ),
@@ -90,6 +92,14 @@ class HomeScreen extends StatelessWidget {
               ))
           .toList(),
     );
+  }
+
+  void _onCustomerTap(BuildContext context, Customer customer) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                CustomerDetailScreen.generateRoute(customer: customer)));
   }
 
   void _onEdit(BuildContext context, Customer customer) {
