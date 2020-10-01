@@ -48,24 +48,34 @@ class CustomerFormScreen extends StatelessWidget {
           },
           builder: (_, state) {
             return ReorderableListView(
-              header: Column(
-                children: [
-                  TextFormField(
-                    autofocus: true,
-                    initialValue: state.customer.name.value,
-                    onChanged: (newName) => _onNameChanged(context, newName),
-                    decoration: InputDecoration(labelText: "Name"),
-                  ),
-                  Row(
-                    children: [
-                      Text("Products(${state.customer.activeProducts.length})"),
-                      FlatButton(
-                        child: Text("Add Product"),
-                        onPressed: () => _onAddProduct(context),
-                      )
-                    ],
-                  )
-                ],
+              header: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      autofocus: true,
+                      initialValue: state.customer.name.value,
+                      onChanged: (newName) => _onNameChanged(context, newName),
+                      decoration: InputDecoration(
+                          labelText: "Name", border: OutlineInputBorder()),
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                            "Products(${state.customer.activeProducts.length})",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600)),
+                        FlatButton(
+                          child: Text("+ Add Product",
+                              style: TextStyle(color: Colors.lightGreenAccent)),
+                          onPressed: () => _onAddProduct(context),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
               onReorder: (oldIndex, newIndex) {},
               children: state.customer.activeProducts
