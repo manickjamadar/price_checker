@@ -5,6 +5,7 @@ import 'package:price_checker/application/customer/customer_cubit.dart';
 import 'package:price_checker/application/customer_form/customer_form_cubit.dart';
 import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
+import 'package:price_checker/presentation/core/widgets/input_dialog.dart';
 import 'package:price_checker/presentation/screens/select_product/select_product_screen.dart';
 
 class CustomerFormScreen extends StatelessWidget {
@@ -56,7 +57,7 @@ class CustomerFormScreen extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Text("Products(0)"),
+                      Text("Products(${state.customer.activeProducts.length})"),
                       FlatButton(
                         child: Text("Add Product"),
                         onPressed: () => _onAddProduct(context),
@@ -73,15 +74,17 @@ class CustomerFormScreen extends StatelessWidget {
                           child: Icon(Icons.local_mall),
                         ),
                         title: Text(ap.product.name.value),
+                        subtitle: Text("Rs ${ap.price.value}",
+                            style: TextStyle(color: Colors.amber)),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.edit),
+                              icon: Icon(Icons.edit, color: Colors.blue),
                               onPressed: () {},
                             ),
                             IconButton(
-                              icon: Icon(Icons.clear),
+                              icon: Icon(Icons.clear, color: Colors.red),
                               onPressed: () {},
                             )
                           ],
@@ -115,7 +118,19 @@ class CustomerFormScreen extends StatelessWidget {
               context,
               MaterialPageRoute(
                   builder: (_) => SelectProductScreen.generateRoute(products)));
-          print(selectedProduct);
+          final String price = await showDialog(
+              context: context,
+              builder: (_) => InputDialog(
+                    hint: "Amount",
+                    title: "Add Price",
+                    keyboardType: TextInputType.number,
+                  ));
+          if (price == null || int.tryParse(price) == null) {
+            return;
+          }
+          final int actualPrice = int.tryParse(price);
+          BlocProvider.of<CustomerFormCubit>(context)
+              .productAdded(selectedProduct, actualPrice);
         });
   }
 }
