@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:price_checker/application/cubit/product_cubit.dart';
+import 'package:price_checker/application/customer/customer_cubit.dart';
+import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/active_product/models/active_product.dart';
+import 'package:price_checker/domain/core/unique_id.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/domain/customer/value_objects/customer_name.dart';
 import 'package:price_checker/domain/product/models/product.dart';
@@ -12,41 +14,6 @@ import 'package:price_checker/presentation/screens/products/products_screen.dart
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final List<Customer> customers = [
-      Customer(name: CustomerName("Israil"), activeProducts: [
-        ActiveProduct(
-            price: ProductPrice(352),
-            product: Product(name: ProductName("Potato"))),
-        ActiveProduct(
-            price: ProductPrice(352),
-            product: Product(name: ProductName("Potato"))),
-        ActiveProduct(
-            price: ProductPrice(352),
-            product: Product(name: ProductName("Potato"))),
-      ]),
-      Customer(name: CustomerName("Israil"), activeProducts: [
-        ActiveProduct(
-            price: ProductPrice(352),
-            product: Product(name: ProductName("Potato"))),
-        ActiveProduct(
-            price: ProductPrice(352),
-            product: Product(name: ProductName("Potato"))),
-        ActiveProduct(
-            price: ProductPrice(352),
-            product: Product(name: ProductName("Potato"))),
-      ]),
-      Customer(name: CustomerName("Israil"), activeProducts: [
-        ActiveProduct(
-            price: ProductPrice(352),
-            product: Product(name: ProductName("Potato"))),
-        ActiveProduct(
-            price: ProductPrice(352),
-            product: Product(name: ProductName("Potato"))),
-        ActiveProduct(
-            price: ProductPrice(352),
-            product: Product(name: ProductName("Potato"))),
-      ]),
-    ];
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -69,23 +36,42 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: ListView.builder(
-        itemBuilder: (_, index) {
-          final customer = customers[index];
-          return ListTile(
-            leading: CircleAvatar(
-              child: Icon(Icons.person),
+      body: BlocBuilder<CustomerCubit, CustomerState>(
+        builder: (_, state) {
+          return state.when(
+            inital: () => Center(
+              child: CircularProgressIndicator(),
             ),
-            title: Text(customer.name.value),
-            subtitle: Text("${customer.activeProducts.length} Products"),
-            trailing: IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {},
-            ),
+            loaded: (customers) =>
+                customers.isEmpty ? buildEmpty() : buildCustomer(customers),
+            error: () => Center(child: Text("Something went wrong, try again")),
           );
         },
-        itemCount: customers.length,
       ),
+    );
+  }
+
+  Widget buildEmpty() {
+    return Center(child: Text("No Customer Available"));
+  }
+
+  Widget buildCustomer(List<Customer> customers) {
+    return ListView.builder(
+      itemBuilder: (_, index) {
+        final customer = customers[index];
+        return ListTile(
+          leading: CircleAvatar(
+            child: Icon(Icons.person),
+          ),
+          title: Text(customer.name.value),
+          subtitle: Text("${customer.activeProducts.length} Products"),
+          trailing: IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () {},
+          ),
+        );
+      },
+      itemCount: customers.length,
     );
   }
 }
