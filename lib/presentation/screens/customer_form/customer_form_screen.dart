@@ -1,13 +1,18 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:price_checker/application/customer/customer_cubit.dart';
 import 'package:price_checker/application/customer_form/customer_form_cubit.dart';
 import 'package:price_checker/application/product/product_cubit.dart';
+import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/presentation/screens/select_product/select_product_screen.dart';
 
 class CustomerFormScreen extends StatelessWidget {
-  static Widget generateRoute(BuildContext context) {
+  static Widget generateRoute(BuildContext context, {Customer customer}) {
     return BlocProvider(
-      create: (_) => CustomerFormCubit(),
+      create: (_) => CustomerFormCubit(
+          customerCubit: BlocProvider.of<CustomerCubit>(context))
+        ..init(optionOf(customer)),
       child: CustomerFormScreen(),
     );
   }
@@ -17,15 +22,36 @@ class CustomerFormScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Add Customer"),
-        ),
-        body: BlocBuilder<CustomerFormCubit, CustomerFormState>(
+        appBar: AppBar(title: Text("Add Customer"), actions: [
+          BlocBuilder<CustomerFormCubit, CustomerFormState>(
+            builder: (_, state) {
+              return IconButton(
+                  icon: Icon(Icons.check),
+                  onPressed: state.isSaving || !state.customer.isValid
+                      ? null
+                      : () => _onSave(context));
+            },
+          ),
+        ]),
+        body: BlocConsumer<CustomerFormCubit, CustomerFormState>(
+          listener: (_, state) {
+            state.saveStatus.fold(() {}, (status) {
+              status.fold((l) {
+                //failure
+              }, (r) {
+                //success
+                _onSaveSuccess(context);
+              });
+            });
+          },
           builder: (_, state) {
             return ReorderableListView(
               header: Column(
                 children: [
-                  TextField(
+                  TextFormField(
+                    autofocus: true,
+                    initialValue: state.customer.name.value,
+                    onChanged: (newName) => _onNameChanged(context, newName),
                     decoration: InputDecoration(labelText: "Name"),
                   ),
                   Row(
@@ -67,6 +93,18 @@ class CustomerFormScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onSaveSuccess(BuildContext context) {
+    Navigator.pop(context);
+  }
+
+  void _onSave(BuildContext context) {
+    BlocProvider.of<CustomerFormCubit>(context).save();
+  }
+
+  void _onNameChanged(BuildContext context, String name) {
+    BlocProvider.of<CustomerFormCubit>(context).nameChanged(name);
   }
 
   void _onAddProduct(BuildContext context) async {
