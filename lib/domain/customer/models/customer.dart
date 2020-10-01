@@ -5,9 +5,28 @@ import 'package:price_checker/domain/customer/value_objects/customer_name.dart';
 part 'customer.freezed.dart';
 
 @freezed
-abstract class Customer with _$Customer {
-  const factory Customer(
-      {@required UniqueId id,
-      @required CustomerName name,
-      @required List<ActiveProduct> activeProducts}) = _Customer;
+abstract class Customer implements _$Customer {
+  const Customer._();
+  const factory Customer({
+    @required UniqueId id,
+    @required CustomerName name,
+    @required List<ActiveProduct> activeProducts,
+  }) = _Customer;
+  factory Customer.empty() {
+    return Customer(
+      id: UniqueId(),
+      name: CustomerName(""),
+      activeProducts: [],
+    );
+  }
+
+  bool get isValid {
+    if (!name.isValid || !id.isValid) {
+      return false;
+    }
+    if (activeProducts.isEmpty) {
+      return true;
+    }
+    return activeProducts.every((ap) => ap.isValid);
+  }
 }

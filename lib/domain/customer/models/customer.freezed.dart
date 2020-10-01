@@ -98,12 +98,13 @@ class __$CustomerCopyWithImpl<$Res> extends _$CustomerCopyWithImpl<$Res>
   }
 }
 
-class _$_Customer implements _Customer {
+class _$_Customer extends _Customer {
   const _$_Customer(
       {@required this.id, @required this.name, @required this.activeProducts})
       : assert(id != null),
         assert(name != null),
-        assert(activeProducts != null);
+        assert(activeProducts != null),
+        super._();
 
   @override
   final UniqueId id;
@@ -142,7 +143,8 @@ class _$_Customer implements _Customer {
       __$CustomerCopyWithImpl<_Customer>(this, _$identity);
 }
 
-abstract class _Customer implements Customer {
+abstract class _Customer extends Customer {
+  const _Customer._() : super._();
   const factory _Customer(
       {@required UniqueId id,
       @required CustomerName name,
