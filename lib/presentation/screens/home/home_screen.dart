@@ -61,17 +61,24 @@ class HomeScreen extends StatelessWidget {
           ),
           title: Text(customer.name.value),
           subtitle: Text("${customer.activeProducts.length} Products"),
-          trailing: buildMoreButton(context),
+          trailing: buildMoreButton(context, customer),
         );
       },
       itemCount: customers.length,
     );
   }
 
-  Widget buildMoreButton(BuildContext context) {
+  Widget buildMoreButton(BuildContext context, Customer customer) {
     final menuItems = ["Edit", "Delete"];
     return PopupMenuButton<int>(
       icon: Icon(Icons.more_vert),
+      onSelected: (index) {
+        if (index == 0) {
+          _onEdit(context, customer);
+        } else if (index == 1) {
+          _onDelete(context);
+        }
+      },
       itemBuilder: (_) => menuItems
           .asMap()
           .keys
@@ -82,6 +89,16 @@ class HomeScreen extends StatelessWidget {
           .toList(),
     );
   }
+
+  void _onEdit(BuildContext context, Customer customer) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) =>
+                CustomerFormScreen.generateRoute(context, customer: customer)));
+  }
+
+  void _onDelete(BuildContext context) {}
 
   void _onAddCustomer(BuildContext context) {
     Navigator.push(
