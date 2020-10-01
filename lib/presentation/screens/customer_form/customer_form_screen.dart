@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_checker/application/customer/customer_cubit.dart';
 import 'package:price_checker/application/customer_form/customer_form_cubit.dart';
 import 'package:price_checker/application/product/product_cubit.dart';
+import 'package:price_checker/domain/active_product/models/active_product.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/presentation/core/widgets/input_dialog.dart';
 import 'package:price_checker/presentation/screens/select_product/select_product_screen.dart';
@@ -85,7 +86,7 @@ class CustomerFormScreen extends StatelessWidget {
                             ),
                             IconButton(
                               icon: Icon(Icons.clear, color: Colors.red),
-                              onPressed: () {},
+                              onPressed: () => _onClear(context, ap),
                             )
                           ],
                         ),
@@ -104,6 +105,11 @@ class CustomerFormScreen extends StatelessWidget {
 
   void _onSave(BuildContext context) {
     BlocProvider.of<CustomerFormCubit>(context).save();
+  }
+
+  void _onClear(BuildContext context, ActiveProduct activeProduct) {
+    BlocProvider.of<CustomerFormCubit>(context)
+        .productCleared(activeProduct.id);
   }
 
   void _onNameChanged(BuildContext context, String name) {
