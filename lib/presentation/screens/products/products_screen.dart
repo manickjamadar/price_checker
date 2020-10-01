@@ -51,11 +51,20 @@ class ProductScreen extends StatelessWidget {
                 child: Icon(Icons.local_mall),
               ),
               title: Text(product.name.value),
-              trailing: Builder(
-                builder: (context) => IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () => _onDelete(context, product),
-                ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {},
+                  ),
+                  Builder(
+                    builder: (context) => IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => _onDelete(context, product),
+                    ),
+                  )
+                ],
               ),
             ),
           );
@@ -79,8 +88,12 @@ class ProductScreen extends StatelessWidget {
     Scaffold.of(context).removeCurrentSnackBar();
     Scaffold.of(context).showSnackBar(SnackBar(
       duration: duration,
-      content: Text("${product.name.value} deleted successfully",
-          style: TextStyle(color: Colors.white)),
+      content: Text(
+        "${product.name.value} deleted successfully",
+        style: TextStyle(color: Colors.white),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       backgroundColor: Colors.green,
       action: SnackBarAction(
         label: "Undo",
