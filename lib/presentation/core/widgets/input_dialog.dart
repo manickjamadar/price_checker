@@ -4,12 +4,14 @@ class InputDialog extends StatefulWidget {
   final String title;
   final String hint;
   final String initialValue;
+  final TextInputType keyboardType;
 
   const InputDialog(
       {Key key,
       @required this.title,
       @required this.hint,
-      this.initialValue = ""})
+      this.initialValue = "",
+      this.keyboardType = TextInputType.text})
       : super(key: key);
 
   @override
@@ -41,6 +43,7 @@ class _InputDialogState extends State<InputDialog> {
             controller: _controller,
             autofocus: true,
             decoration: InputDecoration(labelText: widget.hint),
+            keyboardType: widget.keyboardType,
           ),
           SizedBox(
             height: 20,
