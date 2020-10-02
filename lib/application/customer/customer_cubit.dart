@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:price_checker/domain/customer/facade/i_customer_facade.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/presentation/core/helpers/deletor.dart';
 
@@ -7,12 +9,14 @@ part 'customer_state.dart';
 part 'customer_cubit.freezed.dart';
 
 class CustomerCubit extends Cubit<CustomerState> {
-  CustomerCubit() : super(_Initial());
+  final ICustomerFacade customerFacade;
+  CustomerCubit({@required this.customerFacade}) : super(_Initial());
 
   //events
-  void init() {
-    //Todo: get all customers
-    emit(CustomerState.loaded(customers: []));
+  void init() async {
+    final customerListOption = await customerFacade.findAll();
+    final List<Customer> customers = customerListOption.fold((l) => [], id);
+    emit(CustomerState.loaded(customers: customers));
   }
 
   void save(Customer customer) {
@@ -52,7 +56,7 @@ class CustomerCubit extends Cubit<CustomerState> {
           emit(CustomerState.loaded(customers: newList));
           deletor.shouldDelete.then((value) {
             if (value) {
-              //TODO: delete permanantly
+              customerFacade.delete(deletor.id);
             } else {
               emit(CustomerState.loaded(customers: customers));
             }

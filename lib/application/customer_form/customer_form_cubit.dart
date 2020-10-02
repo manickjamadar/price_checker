@@ -5,17 +5,19 @@ import 'package:price_checker/application/customer/customer_cubit.dart';
 import 'package:price_checker/domain/active_product/models/active_product.dart';
 import 'package:price_checker/domain/active_product/value_objects/product_price.dart';
 import 'package:price_checker/domain/core/unique_id.dart';
+import 'package:price_checker/domain/customer/facade/i_customer_facade.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/domain/customer/value_objects/customer_name.dart';
 import 'package:price_checker/domain/product/models/product.dart';
-import 'package:price_checker/domain/product/value_objects/product_name.dart';
 
 part 'customer_form_state.dart';
 part 'customer_form_cubit.freezed.dart';
 
 class CustomerFormCubit extends Cubit<CustomerFormState> {
   final CustomerCubit customerCubit;
-  CustomerFormCubit({@required this.customerCubit})
+  final ICustomerFacade customerFacade;
+  CustomerFormCubit(
+      {@required this.customerCubit, @required this.customerFacade})
       : super(CustomerFormState.initial());
 
   //events
@@ -69,19 +71,21 @@ class CustomerFormCubit extends Cubit<CustomerFormState> {
         customer: state.customer.copyWith(activeProducts: newProductList)));
   }
 
-  void save() {
+  void save() async {
     state.copyWith(isSaving: true);
     if (!state.customer.isValid) {
       emit(state.copyWith(isSaving: false, saveStatus: Some(Left(Error()))));
     } else {
+      Either<Error, Unit> failureOrSuccess;
       if (state.isEditing) {
         customerCubit.update(state.customer);
-        //todo: do this parmanantly
+        failureOrSuccess = await customerFacade.update(state.customer);
       } else {
         customerCubit.save(state.customer);
-        //todo: do this parmanantly
+        failureOrSuccess = await customerFacade.create(state.customer);
       }
-      emit(state.copyWith(isSaving: false, saveStatus: Some(Right(unit))));
+      emit(state.copyWith(
+          isSaving: false, saveStatus: optionOf(failureOrSuccess)));
     }
   }
 }
