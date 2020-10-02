@@ -132,6 +132,7 @@ class CustomerFormScreen extends StatelessWidget {
         builder: (_) => InputDialog(
               hint: "Amount",
               title: "Add Price",
+              initialValue: activeProduct.price.value.toString(),
               keyboardType: TextInputType.number,
             ));
     if (price == null || int.tryParse(price) == null) {
