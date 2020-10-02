@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:price_checker/domain/product/models/product.dart';
+import 'package:price_checker/presentation/core/widgets/highlighted_text.dart';
 import 'package:price_checker/presentation/core/widgets/item_search.dart';
-import '../helpers/string_extension.dart';
 
 class ProductSearch extends ItemSearch<Product> {
   final List<Product> products;
@@ -22,7 +22,10 @@ class ProductSearch extends ItemSearch<Product> {
             leading: CircleAvatar(
               child: Icon(Icons.local_mall),
             ),
-            title: Text(product.name.value.capitalize()),
+            title: HighlightedText(
+                highlight: query,
+                text: product.name.value,
+                highlightColor: Theme.of(context).accentColor),
             trailing: Icon(Icons.radio_button_unchecked),
           );
         },
@@ -31,9 +34,6 @@ class ProductSearch extends ItemSearch<Product> {
 
   @override
   bool filter(String query, Product item) {
-    print("product $query");
-    final b = item.name.value.toLowerCase().contains(query.toLowerCase());
-    print(b);
-    return b;
+    return item.name.value.toLowerCase().contains(query.toLowerCase());
   }
 }
