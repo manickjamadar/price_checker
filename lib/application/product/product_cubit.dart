@@ -23,17 +23,17 @@ class ProductCubit extends Cubit<ProductState> {
     });
   }
 
-  void save(String name) {
+  void save(String name) async {
     final product = Product(id: UniqueId(), name: ProductName(name));
     if (!product.isValid) {
       return;
     }
-    state.maybeWhen(
+    await state.maybeWhen(
         orElse: () {},
-        loaded: (products) {
+        loaded: (products) async {
           final newList = [...products, product];
           emit(ProductState.loaded(products: newList));
-          //TODO: save product permanantly
+          await productFacade.create(product);
         });
   }
 
@@ -46,7 +46,7 @@ class ProductCubit extends Cubit<ProductState> {
           emit(ProductState.loaded(products: newList));
           deletor.shouldDelete.then((value) {
             if (value) {
-              //TODO: delete permanantly
+              productFacade.delete(deletor.id);
             } else {
               emit(ProductState.loaded(products: products));
             }
@@ -62,7 +62,7 @@ class ProductCubit extends Cubit<ProductState> {
             if (product.id == id) {
               final newProduct = product.copyWith(name: ProductName(name));
               if (newProduct.isValid) {
-                //Todo: update product permanantly
+                productFacade.update(newProduct);
                 return newProduct;
               }
             }
