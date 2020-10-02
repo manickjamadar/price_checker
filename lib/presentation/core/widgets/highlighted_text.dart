@@ -11,12 +11,16 @@ class HighlightedText extends StatelessWidget {
       @required this.text,
       @required this.highlight,
       @required this.highlightColor,
-      this.textColor = Colors.white,
+      this.textColor,
       this.fontSize = 18})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final textStyle = TextStyle(color: textColor, fontSize: fontSize);
+    final defaultTextColor = Theme.of(context).brightness == Brightness.light
+        ? Colors.black
+        : Colors.white;
+    final textStyle =
+        TextStyle(color: textColor ?? defaultTextColor, fontSize: fontSize);
     if (highlight.isEmpty ||
         !text.contains(new RegExp(highlight, caseSensitive: false))) {
       return RichText(
