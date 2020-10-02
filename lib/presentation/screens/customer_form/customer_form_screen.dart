@@ -7,7 +7,7 @@ import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/active_product/models/active_product.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/presentation/core/widgets/input_dialog.dart';
-import 'package:price_checker/presentation/screens/select_product/select_product_screen.dart';
+import 'package:price_checker/presentation/core/widgets/product_search.dart';
 
 class CustomerFormScreen extends StatelessWidget {
   static Widget generateRoute(BuildContext context, {Customer customer}) {
@@ -147,10 +147,11 @@ class CustomerFormScreen extends StatelessWidget {
     await BlocProvider.of<ProductCubit>(context).state.maybeWhen(
         orElse: () {},
         loaded: (products) async {
-          final selectedProduct = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => SelectProductScreen.generateRoute(products)));
+          final selectedProduct = await showSearch(
+              context: context, delegate: ProductSearch(products));
+          if (selectedProduct == null) {
+            return;
+          }
           final String price = await showDialog(
               context: context,
               builder: (_) => InputDialog(
