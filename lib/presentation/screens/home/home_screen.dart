@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
         title: Text("Customers"),
         actions: [
           BlocBuilder<CustomerCubit, CustomerState>(
-            builder: (_, state) {
+            builder: (context, state) {
               final List<Customer> customers =
                   state.maybeWhen(orElse: () => [], loaded: id);
               return IconButton(
@@ -102,8 +102,15 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void _onCustomerSearch(BuildContext context, List<Customer> customers) {
-    showSearch(context: context, delegate: CustomerSearch(customers));
+  void _onCustomerSearch(BuildContext context, List<Customer> customers) async {
+    final selectedCustomer = await showSearch(
+        context: context,
+        delegate: CustomerSearch(customers,
+            onDelete: (c) => _onDelete(context, c),
+            onEdit: (c) => _onEdit(context, c)));
+    if (selectedCustomer != null) {
+      _onCustomerTap(context, selectedCustomer);
+    }
   }
 
   void _onCustomerTap(BuildContext context, Customer customer) {
