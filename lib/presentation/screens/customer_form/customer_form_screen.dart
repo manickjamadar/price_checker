@@ -5,14 +5,17 @@ import 'package:price_checker/application/customer/customer_cubit.dart';
 import 'package:price_checker/application/customer_form/customer_form_cubit.dart';
 import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/active_product/models/active_product.dart';
+import 'package:price_checker/domain/customer/facade/i_customer_facade.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/presentation/core/widgets/input_dialog.dart';
 import 'package:price_checker/presentation/core/widgets/product_search.dart';
+import 'package:price_checker/service_locator.dart';
 
 class CustomerFormScreen extends StatelessWidget {
   static Widget generateRoute(BuildContext context, {Customer customer}) {
     return BlocProvider(
       create: (_) => CustomerFormCubit(
+          customerFacade: locator<ICustomerFacade>(),
           customerCubit: BlocProvider.of<CustomerCubit>(context))
         ..init(optionOf(customer)),
       child: CustomerFormScreen(),
