@@ -9,7 +9,6 @@ import 'package:price_checker/presentation/core/widgets/customer_search.dart';
 import 'package:price_checker/presentation/screens/customer_detail/customer_detail_screen.dart';
 import 'package:price_checker/presentation/screens/customer_form/customer_form_screen.dart';
 import 'package:price_checker/presentation/screens/products/products_screen.dart';
-import "../../core/helpers/string_extension.dart";
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -71,7 +70,7 @@ class HomeScreen extends StatelessWidget {
           leading: CircleAvatar(
             child: Icon(Icons.person),
           ),
-          title: Text(customer.name.value.capitalize()),
+          title: Text(customer.name.value),
           subtitle: Text("${customer.activeProducts.length} Products"),
           trailing:
               Builder(builder: (context) => buildMoreButton(context, customer)),

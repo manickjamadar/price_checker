@@ -4,7 +4,6 @@ import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/product/models/product.dart';
 import 'package:price_checker/presentation/core/helpers/deletor.dart';
 import 'package:price_checker/presentation/core/widgets/input_dialog.dart';
-import '../../core/helpers/string_extension.dart';
 
 class ProductScreen extends StatelessWidget {
   static Widget generateRoute({@required ProductCubit cubit}) {
@@ -50,7 +49,7 @@ class ProductScreen extends StatelessWidget {
               leading: CircleAvatar(
                 child: Icon(Icons.local_mall),
               ),
-              title: Text(product.name.value.capitalize()),
+              title: Text(product.name.value),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
