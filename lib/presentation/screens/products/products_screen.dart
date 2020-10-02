@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/product/models/product.dart';
 import 'package:price_checker/presentation/core/helpers/deletor.dart';
+import 'package:price_checker/presentation/core/widgets/empty_alert.dart';
 import 'package:price_checker/presentation/core/widgets/input_dialog.dart';
 
 class ProductScreen extends StatelessWidget {
@@ -36,7 +37,10 @@ class ProductScreen extends StatelessWidget {
   }
 
   Widget buildEmpty() {
-    return Center(child: Text("No Product Availabile"));
+    return EmptyAlert(
+      icon: Icons.remove_shopping_cart,
+      statement: "No Product Available",
+    );
   }
 
   Widget buildProducts(BuildContext context, List<Product> products) {

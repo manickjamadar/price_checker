@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
+import 'package:price_checker/presentation/core/widgets/empty_alert.dart';
 import 'package:price_checker/presentation/core/widgets/highlighted_text.dart';
 import 'package:price_checker/presentation/core/widgets/item_search.dart';
 
@@ -32,7 +33,10 @@ class CustomerSearch extends ItemSearch<Customer> {
     );
   }
 
-  Widget buildEmpty() => Center(child: Text("No Customer Found"));
+  Widget buildEmpty() => EmptyAlert(
+        icon: Icons.search,
+        statement: "No Customer Found",
+      );
 
   Widget buildMoreButton(BuildContext context, Customer customer) {
     final menuItems = ["Edit", "Delete"];

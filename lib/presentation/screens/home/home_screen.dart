@@ -6,6 +6,7 @@ import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/presentation/core/helpers/deletor.dart';
 import 'package:price_checker/presentation/core/widgets/customer_search.dart';
+import 'package:price_checker/presentation/core/widgets/empty_alert.dart';
 import 'package:price_checker/presentation/screens/customer_detail/customer_detail_screen.dart';
 import 'package:price_checker/presentation/screens/customer_form/customer_form_screen.dart';
 import 'package:price_checker/presentation/screens/products/products_screen.dart';
@@ -58,7 +59,10 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget buildEmpty() {
-    return Center(child: Text("No Customer Available"));
+    return EmptyAlert(
+      icon: Icons.directions_run,
+      statement: "No Customer Available",
+    );
   }
 
   Widget buildCustomer(BuildContext context, List<Customer> customers) {
