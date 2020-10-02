@@ -1,9 +1,11 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:price_checker/application/customer/customer_cubit.dart';
 import 'package:price_checker/application/product/product_cubit.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/presentation/core/helpers/deletor.dart';
+import 'package:price_checker/presentation/core/widgets/customer_search.dart';
 import 'package:price_checker/presentation/screens/customer_detail/customer_detail_screen.dart';
 import 'package:price_checker/presentation/screens/customer_form/customer_form_screen.dart';
 import 'package:price_checker/presentation/screens/products/products_screen.dart';
@@ -19,9 +21,15 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Customers"),
         actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {},
+          BlocBuilder<CustomerCubit, CustomerState>(
+            builder: (_, state) {
+              final List<Customer> customers =
+                  state.maybeWhen(orElse: () => [], loaded: id);
+              return IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () => _onCustomerSearch(context, customers),
+              );
+            },
           ),
           IconButton(
             icon: Icon(Icons.local_mall, color: Colors.blue),
@@ -92,6 +100,10 @@ class HomeScreen extends StatelessWidget {
               ))
           .toList(),
     );
+  }
+
+  void _onCustomerSearch(BuildContext context, List<Customer> customers) {
+    showSearch(context: context, delegate: CustomerSearch(customers));
   }
 
   void _onCustomerTap(BuildContext context, Customer customer) {
