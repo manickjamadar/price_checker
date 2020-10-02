@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:price_checker/domain/product/models/product.dart';
 import 'package:price_checker/presentation/core/widgets/item_search.dart';
-// import 'package:price_checker/presentation/core/widgets/item_search.dart';
+import '../helpers/string_extension.dart';
 
 class ProductSearch extends ItemSearch<Product> {
   final List<Product> products;
@@ -22,7 +22,7 @@ class ProductSearch extends ItemSearch<Product> {
             leading: CircleAvatar(
               child: Icon(Icons.local_mall),
             ),
-            title: Text(product.name.value),
+            title: Text(product.name.value.capitalize()),
             trailing: Icon(Icons.radio_button_unchecked),
           );
         },

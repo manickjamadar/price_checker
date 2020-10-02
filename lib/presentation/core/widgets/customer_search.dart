@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:price_checker/domain/customer/models/customer.dart';
 import 'package:price_checker/presentation/core/widgets/item_search.dart';
+import '../helpers/string_extension.dart';
 
 class CustomerSearch extends ItemSearch<Customer> {
   final void Function(Customer customer) onDelete;
@@ -20,7 +21,7 @@ class CustomerSearch extends ItemSearch<Customer> {
             leading: CircleAvatar(
               child: Icon(Icons.person),
             ),
-            title: Text(customer.name.value),
+            title: Text(customer.name.value.capitalize()),
             subtitle: Text("${customer.activeProducts.length} Products"),
             trailing: buildMoreButton(context, customer));
       },
