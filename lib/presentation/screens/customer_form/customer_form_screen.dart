@@ -57,7 +57,12 @@ class CustomerFormScreen extends StatelessWidget {
                       initialValue: state.customer.name.value,
                       onChanged: (newName) => _onNameChanged(context, newName),
                       decoration: InputDecoration(
-                          labelText: "Name", border: OutlineInputBorder()),
+                          errorText:
+                              state.showError && !state.customer.name.isValid
+                                  ? "Invalid customer name"
+                                  : null,
+                          labelText: "Name",
+                          border: OutlineInputBorder()),
                     ),
                     SizedBox(height: 10),
                     Row(
@@ -69,7 +74,7 @@ class CustomerFormScreen extends StatelessWidget {
                                 fontSize: 16, fontWeight: FontWeight.w600)),
                         FlatButton(
                           child: Text("+ Add Product",
-                              style: TextStyle(color: Colors.lightGreenAccent)),
+                              style: TextStyle(color: Colors.grey)),
                           onPressed: () => _onAddProduct(context),
                         )
                       ],
