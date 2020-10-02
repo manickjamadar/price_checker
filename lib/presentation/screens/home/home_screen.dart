@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: Icon(Icons.local_mall, color: Colors.blue),
+            icon: Icon(Icons.local_mall, color: Theme.of(context).accentColor),
             onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(

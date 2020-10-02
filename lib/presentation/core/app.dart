@@ -8,9 +8,9 @@ class App extends StatelessWidget {
       title: "Price Checker",
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-          accentColor: Colors.blue,
+          accentColor: Colors.green,
           floatingActionButtonTheme:
-              FloatingActionButtonThemeData(backgroundColor: Colors.blue)),
+              FloatingActionButtonThemeData(backgroundColor: Colors.green)),
       themeMode: ThemeMode.dark,
       home: HomeScreen(),
     );
