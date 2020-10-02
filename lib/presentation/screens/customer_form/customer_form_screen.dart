@@ -143,6 +143,7 @@ class CustomerFormScreen extends StatelessWidget {
   }
 
   void _onAddProduct(BuildContext context) async {
+    FocusScope.of(context).unfocus();
     await BlocProvider.of<ProductCubit>(context).state.maybeWhen(
         orElse: () {},
         loaded: (products) async {
